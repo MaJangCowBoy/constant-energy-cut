@@ -109,7 +109,7 @@ function find_1Q_domain(runner::SimulationRunner, target::String)
     # Let the exact system relax energetically based on the assigned starting configurations
     for _ in 1:100  minimize_energy!(runner.base_sys) end
     
-    println("✔ Successfully generated and minimized deterministic domain $target!")
+    println("✔ Successfully generated and minimized deterministic domain $target !")
 end
 
 """
