@@ -46,7 +46,7 @@ Data wrapper to encapsulate loaded intensity metrics
 struct IntensityData
     tag::String
     data::Array{Float64, 2}
-    energies::StepRangeLen{Float64}
+    energies::Vector{Float64}
 end
 
 # --- Methods ---
@@ -64,7 +64,7 @@ function load_intensity_data(tag::String)::IntensityData
         fname = "CoNbS_result_3Q_state.jld2"
         println("Loading 3Q state: $fname")
         res = load(fname)["res"]
-        return IntensityData("3Q", Float64.(res.data), res.energies)
+        return IntensityData("3Q", Float64.(res.data), collect(res.energies))
         
     elseif tag == "1Q"
         combined_data = nothing
@@ -87,7 +87,7 @@ function load_intensity_data(tag::String)::IntensityData
                 combined_data .+= d  # 강도 동등하게 합산
             end
         end
-        return IntensityData("1Q", combined_data, sample_energies)
+        return IntensityData("1Q", combined_data, collect(sample_energies))
     else
         error("Unsupported tag: $tag")
     end
