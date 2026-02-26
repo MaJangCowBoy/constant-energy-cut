@@ -19,7 +19,7 @@ struct PlotConfig
     bz_y::Vector{Float64}
     
     function PlotConfig()
-        E_ranges = [(0.9, 1.5), (1.2, 1.7), (2.2, 2.7)]
+        E_ranges = [(0.8, 1.4), (1.1, 1.7), (2.2, 2.7)]
         H_range = -1.0:0.01:1.0
         K_raw_range = -1.0:0.01:1.0
         
@@ -106,8 +106,9 @@ function plot_structure!(config::PlotConfig, item::IntensityData)
         base_sigma = 2.5
         sigma_spatial = (base_sigma, base_sigma / (sqrt(3)/2)) # Cartesian isotropic 보정
         smoothed = imfilter(intensity_map, Kernel.gaussian(sigma_spatial))
-
-        smoothed_map_final = apply_mirror_sym(smoothed)
+        
+        smoothed_map_final = smoothed; # to check comparison with/without symmetry
+        # smoothed_map_final = apply_mirror_sym(smoothed)
         
         fig = Figure(size=(800, 700))
         ax = Axis(fig[1, 1], title = "CoNbS $(item.tag) state ($(E_min)-$(E_max) meV)", 
