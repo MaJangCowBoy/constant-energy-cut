@@ -1,0 +1,5 @@
+*.jld2
+*.out
+*.err
+tests/
+*.png
