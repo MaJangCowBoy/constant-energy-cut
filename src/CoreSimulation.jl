@@ -124,9 +124,15 @@ function find_3Q_domain(runner::SimulationRunner)
     
     sys_small = repeat_periodically(runner.base_sys, (2, 2, 1))
     
-    randomize_spins!(sys_small)
-    for _ in 1:40  randomize_spins!(sys_small) end
-    for _ in 1:60  minimize_energy!(sys_small) end
+    s1 = [  0.0,   0.0,  3/2];
+    s2 = [2√2/2,   0.0, -1/2];
+    s3 = [-√2/2,  √6/2, -1/2];
+    s4 = [-√2/2, -√6/2, -1/2];
+
+    sys_small.dipoles[1,1,1,1] = s1;  sys_small.dipoles[1,1,1,2] = s4;
+    sys_small.dipoles[1,2,1,1] = s2;  sys_small.dipoles[1,2,1,2] = s3;
+    sys_small.dipoles[2,1,1,1] = s3;  sys_small.dipoles[2,1,1,2] = s2;
+    sys_small.dipoles[2,2,1,1] = s4;  sys_small.dipoles[2,2,1,2] = s1;
     
     println("Domain minimized.")
     runner.base_sys = repeat_periodically(sys_small, runner.config.L_size)
